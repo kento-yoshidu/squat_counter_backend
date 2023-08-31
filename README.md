@@ -1,1 +1,1 @@
-# squat_counter_backend
+# squat_counter_backend 🦵
