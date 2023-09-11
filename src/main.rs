@@ -2,7 +2,7 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 mod service;
-use service::test;
+use service::{test, fetch};
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -15,6 +15,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(hello)
             .service(test)
+            .service(fetch)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
@@ -22,10 +23,6 @@ async fn main() -> std::io::Result<()> {
 }
 
 /*
-use dotenv::dotenv;
-use std::env;
-
-use aws_sdk_dynamodb::{Client};
 
 #[tokio::main]
 async fn main() {
