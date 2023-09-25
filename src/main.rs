@@ -2,7 +2,7 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 mod service;
-use service::{test, fetch};
+use service::{test, fetch, add};
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -16,6 +16,7 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(test)
             .service(fetch)
+            .service(add)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
