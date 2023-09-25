@@ -1,8 +1,10 @@
+mod repo;
+
 #[allow(unused)]
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 mod service;
-use service::{test, fetch, add};
+use service::{fetch, add};
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -14,7 +16,6 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(hello)
-            .service(test)
             .service(fetch)
             .service(add)
     })
