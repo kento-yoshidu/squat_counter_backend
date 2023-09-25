@@ -1,7 +1,7 @@
 use dotenv::dotenv;
 use std::env;
 
-use aws_sdk_dynamodb::{Client};
+use aws_sdk_dynamodb::{Client, model::{AttributeAction, AttributeValue}};
 
 #[allow(unused)]
 use actix_web::{
@@ -57,4 +57,29 @@ pub async fn fetch() -> Result<impl Responder> {
     let user = User { id: 1, name: String::from("hoge") };
 
     Ok(web::Json(user))
+}
+
+#[post("/add")]
+pub async fn add() -> Result<impl Responder> {
+    let config = aws_config::load_from_env().await;
+    let client = Client::new(&config);
+
+    dotenv().ok();
+
+    let table_name = env::var("TABLE_NAME").unwrap();
+
+    let user_id = AttributeValue::N("3".to_string());
+    let user_name = AttributeValue::S("gogogob".to_string());
+
+    let request = client
+        .put_item()
+        .table_name(table_name)
+        .item("Id", user_id)
+        .item("Name", user_name);
+
+    let resp = request.send().await;
+
+    println!("resop = {:?}", resp);
+
+    Ok(web::Json( "status" ))
 }
