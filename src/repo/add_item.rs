@@ -1,3 +1,31 @@
+use dotenv::dotenv;
+use std::env;
+
+use aws_sdk_dynamodb::{Client, model::AttributeValue};
+
+pub async fn add() -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
+    dotenv().ok();
+
+    let table_name = env::var("TABLE_NAME").unwrap();
+
+    let config = aws_config::load_from_env().await;
+    let client = Client::new(&config);
+
+    let user_id = AttributeValue::N("4".to_string());
+    let user_name = AttributeValue::S("uhouho".to_string());
+
+    let request = client
+        .put_item()
+        .table_name(table_name)
+        .item("Id", user_id)
+        .item("Name", user_name);
+
+    let resp = request.send().await;
+
+    resp
+}
+
+/*
 use aws_sdk_dynamodb::types::AttributeValue;
 use aws_sdk_dynamodb::{Client, Error};
 
@@ -42,3 +70,4 @@ pub async fn add_item(client: &Client, item: Item, table: &String) -> Result<Ite
         last_name,
     })
 }
+*/
