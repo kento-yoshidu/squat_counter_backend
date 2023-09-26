@@ -3,7 +3,7 @@ use crate::repo::add_item;
 use dotenv::dotenv;
 use std::env;
 
-use aws_sdk_dynamodb::Client;
+use aws_sdk_dynamodb::{Client, model::AttributeValue};
 
 #[allow(unused)]
 use actix_web::{
@@ -19,8 +19,8 @@ use sqlx::{self, FromRow};
 
 #[derive(Serialize, FromRow, Debug)]
 struct User {
-    id: i32,
-    name: String,
+    Id: String,
+    Name: String,
 }
 
 #[derive(Debug, Serialize)]
@@ -46,13 +46,38 @@ pub async fn fetch() -> Result<impl Responder> {
 
     let table_name = env::var("TABLE_NAME").unwrap();
 
-    let resp = client.scan().table_name(table_name).send().await;
+    let resp = client.scan().table_name(table_name).send().await.unwrap();
 
     println!("response = {:?}", resp);
 
-    let user = User { id: 1, name: String::from("hoge") };
+    for item in resp.items.unwrap_or_default() {
+        let mut users: Vec<User> = Vec::new();
 
-    Ok(web::Json(user))
+        if let (Some(AttributeValue::N(id)), Some(AttributeValue::S(name))) =
+            (item.get("Id"), item.get("Name"))
+        {
+            println!("title: '{}', content: '{}'", id, name)
+        }
+    }
+
+    let mut users: Vec<User> = Vec::new();
+
+            /*
+    for item in resp.items {
+        for i in item {
+            println!("{:?}", i.get("Name"));
+        }
+
+            let user = User {
+                Id: i.get("Id").unwrap(),
+                Name: i.get("Name").unwrap(),
+            }
+    }
+            */
+
+    //let user = User { id: 1, name: String::from("hoge") };
+
+    Ok(web::Json(users))
 }
 
 #[post("/add")]
