@@ -5,29 +5,28 @@ use std::env;
 
 use aws_sdk_dynamodb::{Client, model::AttributeValue};
 
-#[allow(unused)]
 use actix_web::{
     get, post, web,
-    web::{Data, Json, Path},
-    Responder, HttpResponse,
+    Responder,
     Result
 };
 
-#[allow(unused)]
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use sqlx::{self, FromRow};
 
 #[derive(Serialize, FromRow, Debug)]
 struct User {
-    Id: String,
-    Name: String,
+    id: String,
+    name: String,
 }
 
-#[derive(Debug, Serialize)]
-#[allow(unused)]
-pub enum ApiErrorResponse {
-    AuthenticationFailure,
-    NeedsAuthentication,
+impl User {
+    fn new(id: &String, name: &String) -> User {
+        return User {
+            id: id.to_string(),
+            name: name.to_string(),
+        };
+    }
 }
 
 #[derive(Debug, Serialize)]
@@ -48,34 +47,15 @@ pub async fn fetch() -> Result<impl Responder> {
 
     let resp = client.scan().table_name(table_name).send().await.unwrap();
 
-    println!("response = {:?}", resp);
+    let mut users: Vec<User> = Vec::new();
 
     for item in resp.items.unwrap_or_default() {
-        let mut users: Vec<User> = Vec::new();
-
         if let (Some(AttributeValue::N(id)), Some(AttributeValue::S(name))) =
             (item.get("Id"), item.get("Name"))
         {
-            println!("title: '{}', content: '{}'", id, name)
+            users.push(User::new(id, name))
         }
     }
-
-    let mut users: Vec<User> = Vec::new();
-
-            /*
-    for item in resp.items {
-        for i in item {
-            println!("{:?}", i.get("Name"));
-        }
-
-            let user = User {
-                Id: i.get("Id").unwrap(),
-                Name: i.get("Name").unwrap(),
-            }
-    }
-            */
-
-    //let user = User { id: 1, name: String::from("hoge") };
 
     Ok(web::Json(users))
 }
