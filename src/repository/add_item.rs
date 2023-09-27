@@ -11,8 +11,8 @@ pub async fn add() -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dy
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
-    let user_id = AttributeValue::N("4".to_string());
-    let user_name = AttributeValue::S("uhouho".to_string());
+    let user_id = AttributeValue::N("5".to_string());
+    let user_name = AttributeValue::S("bahaha".to_string());
 
     let request = client
         .put_item()
