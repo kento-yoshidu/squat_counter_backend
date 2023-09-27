@@ -9,8 +9,8 @@ use service::{fetch, add};
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(fetch)
-            .service(add)
+            .service(fetch::fetch)
+            .service(add::add)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
