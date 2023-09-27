@@ -1,4 +1,4 @@
-use crate::repo::add_item;
+use crate::repository::add_item;
 
 use actix_web::{
   post,
