@@ -1,4 +1,5 @@
 mod repository;
+mod model;
 
 use actix_web::{App, HttpServer};
 

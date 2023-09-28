@@ -9,7 +9,7 @@ use actix_web::{
 
 #[post("/add")]
 pub async fn add() -> Result<impl Responder> {
-    let resp = add_item::add().await;
+    let _resp = add_item::add().await;
 
     Ok(web::Json( "status" ))
 }
