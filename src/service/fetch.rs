@@ -2,6 +2,8 @@ use crate::repository::fetch_item;
 use crate::model::user::User;
 use crate::model::count::Count;
 
+use aws_sdk_dynamodb::model::AttributeValue;
+
 use actix_web::{
     get, web,
     Responder,
@@ -9,7 +11,6 @@ use actix_web::{
 };
 
 use serde::Serialize;
-// use sqlx::{self, FromRow};
 
 #[derive(Debug, Serialize)]
 pub struct ApiResponseBody {
@@ -18,21 +19,21 @@ pub struct ApiResponseBody {
     pub message: String,
 }
 
-#[get("/fetch")]
+#[get("/fetch/user")]
 pub async fn fetch_user() -> Result<impl Responder> {
-    fetch_item::fetch_user().await;
+    let result = fetch_item::fetch_user().await;
 
-    /*
-    for item in resp.items.unwrap_or_default() {
-        if let (Some(AttributeValue::N(id)), Some(AttributeValue::S(name))) =
-            (item.get("Id"), item.get("Name"))
-        {
-            users.push(User::new(id, name))
+    let mut users: Vec<User> = Vec::new();
+
+    for output in result.into_iter() {
+        for item in output.items.unwrap_or_default() {
+            if let (Some(AttributeValue::N(id)), Some(AttributeValue::S(name))) =
+                (item.get("Id"), item.get("Name"))
+            {
+                users.push(User::new(id, name))
+            }
         }
     }
-    */
-
-    let users: Vec<User> = Vec::new();
 
     Ok(web::Json(users))
 }
