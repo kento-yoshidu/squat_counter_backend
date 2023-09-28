@@ -33,7 +33,7 @@ pub struct ApiResponseBody {
 
 #[get("/fetch")]
 pub async fn fetch() -> Result<impl Responder> {
-    let mut users: Vec<User> = fetch_item::fetch_item();
+    fetch_item::fetch_item().await;
 
     /*
     for item in resp.items.unwrap_or_default() {
@@ -44,6 +44,8 @@ pub async fn fetch() -> Result<impl Responder> {
         }
     }
     */
+
+    let mut users: Vec<User> = Vec::new();
 
     Ok(web::Json(users))
 }
