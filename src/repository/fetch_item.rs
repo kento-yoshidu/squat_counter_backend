@@ -1,25 +1,9 @@
 use dotenv::dotenv;
 use std::env;
 
+use crate::model::user::User;
+
 use aws_sdk_dynamodb::{Client, model::AttributeValue};
-
-use serde::Serialize;
-use sqlx::{self, FromRow};
-
-#[derive(Serialize, FromRow, Debug)]
-pub struct User {
-    id: String,
-    name: String,
-}
-
-impl User {
-    fn new(id: &String, name: &String) -> User {
-        return User {
-            id: id.to_string(),
-            name: name.to_string(),
-        };
-    }
-}
 
 pub async fn fetch_item() -> usize {
     let config = aws_config::load_from_env().await;

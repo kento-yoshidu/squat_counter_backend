@@ -1,4 +1,5 @@
 use crate::repository::fetch_item;
+use crate::model::user::User;
 
 use actix_web::{
     get, web,
@@ -7,22 +8,7 @@ use actix_web::{
 };
 
 use serde::Serialize;
-use sqlx::{self, FromRow};
-
-#[derive(Serialize, FromRow, Debug)]
-pub struct User {
-    id: String,
-    name: String,
-}
-
-impl User {
-    fn new(id: &String, name: &String) -> User {
-        return User {
-            id: id.to_string(),
-            name: name.to_string(),
-        };
-    }
-}
+// use sqlx::{self, FromRow};
 
 #[derive(Debug, Serialize)]
 pub struct ApiResponseBody {
@@ -45,7 +31,7 @@ pub async fn fetch() -> Result<impl Responder> {
     }
     */
 
-    let mut users: Vec<User> = Vec::new();
+    let users: Vec<User> = Vec::new();
 
     Ok(web::Json(users))
 }
