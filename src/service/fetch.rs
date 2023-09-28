@@ -1,5 +1,6 @@
 use crate::repository::fetch_item;
 use crate::model::user::User;
+use crate::model::count::Count;
 
 use actix_web::{
     get, web,
@@ -18,8 +19,8 @@ pub struct ApiResponseBody {
 }
 
 #[get("/fetch")]
-pub async fn fetch() -> Result<impl Responder> {
-    fetch_item::fetch_item().await;
+pub async fn fetch_user() -> Result<impl Responder> {
+    fetch_item::fetch_user().await;
 
     /*
     for item in resp.items.unwrap_or_default() {
@@ -34,4 +35,13 @@ pub async fn fetch() -> Result<impl Responder> {
     let users: Vec<User> = Vec::new();
 
     Ok(web::Json(users))
+}
+
+#[get("/fetch/count")]
+pub async fn fetch_count() -> Result<impl Responder> {
+    fetch_item::fetch_count().await;
+
+    let counts: Vec<Count> = Vec::new();
+
+    Ok(web::Json(counts))
 }
