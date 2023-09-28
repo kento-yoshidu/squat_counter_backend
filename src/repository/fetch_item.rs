@@ -1,12 +1,11 @@
 use dotenv::dotenv;
 use std::env;
 
-use crate::model::user::User;
 use crate::model::count::Count;
 
-use aws_sdk_dynamodb::{Client, model::AttributeValue};
+use aws_sdk_dynamodb::{Client, model::AttributeValue, SdkError};
 
-pub async fn fetch_user() -> usize {
+pub async fn fetch_user() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
@@ -14,21 +13,14 @@ pub async fn fetch_user() -> usize {
 
     let table_name = env::var("TABLE_NAME").unwrap();
 
-    let resp = client.scan().table_name(table_name).send().await.unwrap();
+    let resp = client
+        .scan()
+        .table_name(table_name)
+        .send()
+        .await
+        .unwrap();
 
-    let mut users: Vec<User> = Vec::new();
-
-    for item in resp.items.unwrap_or_default() {
-        if let (Some(AttributeValue::N(id)), Some(AttributeValue::S(name))) =
-            (item.get("Id"), item.get("Name"))
-        {
-            users.push(User::new(id, name))
-        }
-    }
-
-    println!("{:?}", users);
-
-    999
+    Ok(resp)
 }
 
 pub async fn fetch_count() {
