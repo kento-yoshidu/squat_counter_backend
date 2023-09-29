@@ -46,10 +46,14 @@ pub async fn fetch_count() -> Result<impl Responder> {
 
     for scan_output in resp.into_iter() {
         for item in scan_output.items.unwrap_or_default() {
-            if let (Some(AttributeValue::S(id)), Some(AttributeValue::S(date)), Some(AttributeValue::S(count))) =
-                (item.get("id"), item.get("date"), item.get("count"))
+            if let (Some(AttributeValue::S(id)),
+                    Some(AttributeValue::S(date)),
+                    Some(AttributeValue::S(count)),
+                    Some(AttributeValue::S(user_name)),
+                ) =
+                (item.get("id"), item.get("date"), item.get("count"), item.get("user_name"))
             {
-                counts.push(Count::new(id, date, count))
+                counts.push(Count::new(id, date, count, &user_name))
             }
         }
     }
