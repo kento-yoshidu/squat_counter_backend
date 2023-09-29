@@ -40,9 +40,23 @@ pub async fn fetch_user() -> Result<impl Responder> {
 
 #[get("/fetch/count")]
 pub async fn fetch_count() -> Result<impl Responder> {
-    fetch_item::fetch_count().await;
+    let resp = fetch_item::fetch_count().await;
 
-    let counts: Vec<Count> = Vec::new();
+    let mut counts: Vec<Count> = Vec::new();
+
+    for scan_output in resp.into_iter() {
+        for item in scan_output.items.unwrap_or_default() {
+            if let (Some(AttributeValue::S(id)),
+                    Some(AttributeValue::S(date)),
+                    Some(AttributeValue::S(count)),
+                    Some(AttributeValue::S(user_name)),
+                ) =
+                (item.get("id"), item.get("date"), item.get("count"), item.get("user_name"))
+            {
+                counts.push(Count::new(id, date, count, &user_name))
+            }
+        }
+    }
 
     Ok(web::Json(counts))
 }
