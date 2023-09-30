@@ -3,16 +3,17 @@ use std::env;
 
 use aws_sdk_dynamodb::{Client, model::AttributeValue};
 
-pub async fn add() -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
+#[allow(unused)]
+pub async fn add_user() -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
     dotenv().ok();
 
-    let table_name = env::var("TABLE_NAME").unwrap();
+    let table_name = env::var("TABLE_NAME_USER").unwrap();
 
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
-    let user_id = AttributeValue::N("5".to_string());
-    let user_name = AttributeValue::S("bahaha".to_string());
+    let user_id = AttributeValue::N("6".to_string());
+    let user_name = AttributeValue::S("foobar".to_string());
 
     let request = client
         .put_item()
@@ -25,6 +26,33 @@ pub async fn add() -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dy
     resp
 }
 
+pub async fn add_count(id: &String, date: &String, count: &String, user_name: &String) -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
+    dotenv().ok();
+
+    let table_name = env::var("TABLE_NAME_COUNT").unwrap();
+
+    println!("teble_name = {}", table_name);
+
+    let config = aws_config::load_from_env().await;
+    let client = Client::new(&config);
+
+    let id = AttributeValue::S(id.to_string());
+    let date = AttributeValue::S(date.to_string());
+    let count = AttributeValue::S(count.to_string());
+    let user_name = AttributeValue::S(user_name.to_string());
+
+    let request = client
+        .put_item()
+        .table_name(table_name)
+        .item("id", id)
+        .item("date", date)
+        .item("count", count)
+        .item("user_name", user_name);
+
+    let resp = request.send().await;
+
+    resp
+}
 /*
 use aws_sdk_dynamodb::types::AttributeValue;
 use aws_sdk_dynamodb::{Client, Error};

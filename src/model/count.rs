@@ -1,12 +1,13 @@
+use serde::Deserialize;
 use serde::Serialize;
 use sqlx::FromRow;
 
-#[derive(Serialize, FromRow, Debug)]
+#[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct Count {
-    id: String,
-    date: String,
-    count: String,
-    user_name: String,
+    pub id: String,
+    pub date: String,
+    pub count: String,
+    pub user_name: String,
 }
 
 impl Count {
