@@ -27,7 +27,8 @@ pub async fn fetch_user() -> Result<impl Responder> {
 
     for output in result.into_iter() {
         for item in output.items.unwrap_or_default() {
-            if let (Some(AttributeValue::N(id)), Some(AttributeValue::S(name))) =
+            if let (Some(AttributeValue::N(id)),
+                    Some(AttributeValue::S(name))) =
                 (item.get("Id"), item.get("Name"))
             {
                 users.push(User::new(id, name))
