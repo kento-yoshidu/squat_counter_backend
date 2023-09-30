@@ -1,5 +1,6 @@
 use dotenv::dotenv;
 use std::env;
+use uuid::Uuid;
 
 use aws_sdk_dynamodb::{Client, model::AttributeValue};
 
@@ -26,7 +27,7 @@ pub async fn add_user() -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_s
     resp
 }
 
-pub async fn add_count(id: &String, date: &String, count: &String, user_name: &String) -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
+pub async fn add_count(date: &String, count: &String, user_name: &String) -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
     dotenv().ok();
 
     let table_name = env::var("TABLE_NAME_COUNT").unwrap();
@@ -36,7 +37,9 @@ pub async fn add_count(id: &String, date: &String, count: &String, user_name: &S
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
-    let id = AttributeValue::S(id.to_string());
+    let uuid = Uuid::new_v4().to_hyphenated().to_string();
+    let id = AttributeValue::S(uuid);
+
     let date = AttributeValue::S(date.to_string());
     let count = AttributeValue::S(count.to_string());
     let user_name = AttributeValue::S(user_name.to_string());

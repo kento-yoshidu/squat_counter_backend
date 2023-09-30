@@ -16,3 +16,4 @@ sqlx = { version = "0.6.2", features = ["runtime-async-std-native-tls", "postgre
 aws-config = "0.2.0"
 aws-sdk-dynamodb = "0.2.0"
 tokio = { version = "1", features = ["full"] }
+uuid = { version = "0.8.1", features = ["serde", "v4"] }
