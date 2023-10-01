@@ -1,2 +1,2 @@
-pub mod fetch_item;
-pub mod add_item;
+pub mod fetch_repository;
+pub mod add_repository;
