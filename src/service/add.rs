@@ -1,13 +1,26 @@
-use crate::{repository::add_item, model::count::Count};
+use crate::{
+    repository::add_item,
+    model::count::Count,
+    model::user::User
+};
 
 use actix_web::{
     post,
     web,
     Responder,
-    Result
+    Result, HttpResponse
 };
 
-#[post("/add")]
+#[post("/add/user")]
+pub async fn add_user(req: web::Json<User>) -> Result<impl Responder> {
+    let name = &req.name;
+
+    let _resp = add_item::add_user(name).await;
+
+    Ok(HttpResponse::Ok().json("{\"message\":\"Hello world again!\"}"))
+}
+
+#[post("/add/count")]
 pub async fn add_count(req: web::Json<Count>) -> Result<impl Responder> {
     let date = &req.date;
     let count = &req.count;
@@ -15,5 +28,5 @@ pub async fn add_count(req: web::Json<Count>) -> Result<impl Responder> {
 
     let _resp = add_item::add_count(date, count, user_name).await;
 
-    Ok(web::Json( "status" ))
+    Ok(web::Json("foo"))
 }
