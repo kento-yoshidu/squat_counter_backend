@@ -3,13 +3,11 @@ use crate::model::user::User;
 use crate::model::count::Count;
 
 use aws_sdk_dynamodb::model::AttributeValue;
-
 use actix_web::{
     get, web,
     Responder,
     Result
 };
-
 use serde::Serialize;
 
 #[derive(Debug, Serialize)]

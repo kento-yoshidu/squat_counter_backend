@@ -22,6 +22,7 @@ async fn main() -> std::io::Result<()> {
             )
             .service(fetch::fetch_user)
             .service(fetch::fetch_count)
+            .service(add::add_user)
             .service(add::add_count)
     })
     .bind(("127.0.0.1", 8080))?

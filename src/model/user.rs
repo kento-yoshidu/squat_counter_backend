@@ -1,10 +1,10 @@
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 use sqlx::FromRow;
 
-#[derive(Serialize, FromRow, Debug)]
+#[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct User {
-    id: String,
-    name: String,
+    pub id: String,
+    pub name: String,
 }
 
 impl User {
