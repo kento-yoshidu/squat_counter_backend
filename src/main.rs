@@ -5,7 +5,7 @@ use actix_web::{App, http::header, HttpServer};
 use actix_cors::Cors;
 
 mod service;
-use service::{fetch, add};
+use service::{fetch_service, add_service};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -20,10 +20,10 @@ async fn main() -> std::io::Result<()> {
                     .supports_credentials()
                     .max_age(3600),
             )
-            .service(fetch::fetch_user)
-            .service(fetch::fetch_count)
-            .service(add::add_user)
-            .service(add::add_count)
+            .service(fetch_service::fetch_user)
+            .service(fetch_service::fetch_count)
+            .service(add_service::add_user)
+            .service(add_service::add_count)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

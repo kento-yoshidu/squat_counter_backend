@@ -1,4 +1,4 @@
-use crate::repository::fetch_item;
+use crate::repository::fetch_repository;
 use crate::model::user::User;
 use crate::model::count::Count;
 
@@ -19,15 +19,15 @@ pub struct ApiResponseBody {
 
 #[get("/fetch/user")]
 pub async fn fetch_user() -> Result<impl Responder> {
-    let result = fetch_item::fetch_user().await;
+    let result = fetch_repository::fetch_user().await;
 
     let mut users: Vec<User> = Vec::new();
 
     for output in result.into_iter() {
         for item in output.items.unwrap_or_default() {
-            if let (Some(AttributeValue::N(id)),
+            if let (Some(AttributeValue::S(id)),
                     Some(AttributeValue::S(name))) =
-                (item.get("Id"), item.get("Name"))
+                (item.get("id"), item.get("name"))
             {
                 users.push(User::new(id, name))
             }
@@ -39,7 +39,7 @@ pub async fn fetch_user() -> Result<impl Responder> {
 
 #[get("/fetch/count")]
 pub async fn fetch_count() -> Result<impl Responder> {
-    let resp = fetch_item::fetch_count().await;
+    let resp = fetch_repository::fetch_count().await;
 
     let mut counts: Vec<Count> = Vec::new();
 
