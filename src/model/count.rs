@@ -20,3 +20,9 @@ impl Count {
         };
     }
 }
+
+#[derive(Serialize, Deserialize, FromRow, Debug)]
+pub struct CountRequest {
+    pub count: String,
+    pub user_name: String,
+}

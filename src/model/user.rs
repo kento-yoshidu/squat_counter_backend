@@ -15,3 +15,8 @@ impl User {
         };
     }
 }
+
+#[derive(Serialize, Deserialize, FromRow, Debug)]
+pub struct UserRequest {
+    pub name: String
+}
