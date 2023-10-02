@@ -1,7 +1,7 @@
 use dotenv::dotenv;
 use std::env;
 
-use aws_sdk_dynamodb::{Client, SdkError};
+use aws_sdk_dynamodb::{Client, SdkError, model::AttributeValue};
 
 pub async fn fetch_user() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
     let config = aws_config::load_from_env().await;
@@ -29,9 +29,24 @@ pub async fn fetch_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkEr
 
     let table_name = env::var("TABLE_NAME_COUNT").unwrap();
 
+    // let count = 130;
+
+    // フィルタリングの仕方
+    // https://docs.rs/rusoto_dynamodb/latest/rusoto_dynamodb/struct.QueryInput.html#structfield.filter_expression
+
     let resp = client
         .scan()
         .table_name(table_name)
+        /*
+        .filter_expression("#filter_key = :val".to_string())
+        .expression_attribute_names(
+            "#filter_key".to_string(),
+            "count".to_string())
+        .expression_attribute_values(
+            ":val".to_string(),
+            AttributeValue::S(count.to_string())
+        )
+        */
         .send()
         .await
         .unwrap();
