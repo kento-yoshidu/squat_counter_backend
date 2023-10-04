@@ -59,11 +59,6 @@ pub async fn fetch_today(date: &String) -> Result<aws_sdk_dynamodb::output::Scan
 
     let table_name = env::var("TABLE_NAME_COUNT").unwrap();
 
-    // フィルタリングの仕方
-    // https://docs.rs/rusoto_dynamodb/latest/rusoto_dynamodb/struct.QueryInput.html#structfield.filter_expression
-
-    // let date = String::from("2023-10-02");
-
     let resp = client
         .scan()
         .table_name(table_name)
