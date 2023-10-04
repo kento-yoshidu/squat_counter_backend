@@ -31,9 +31,6 @@ pub async fn fetch_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkEr
 
     // let count = 130;
 
-    // フィルタリングの仕方
-    // https://docs.rs/rusoto_dynamodb/latest/rusoto_dynamodb/struct.QueryInput.html#structfield.filter_expression
-
     let resp = client
         .scan()
         .table_name(table_name)
@@ -47,6 +44,37 @@ pub async fn fetch_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkEr
             AttributeValue::S(count.to_string())
         )
         */
+        .send()
+        .await
+        .unwrap();
+
+    Ok(resp)
+}
+
+pub async fn fetch_today(date: &String) -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
+    let config = aws_config::load_from_env().await;
+    let client = Client::new(&config);
+
+    dotenv().ok();
+
+    let table_name = env::var("TABLE_NAME_COUNT").unwrap();
+
+    // フィルタリングの仕方
+    // https://docs.rs/rusoto_dynamodb/latest/rusoto_dynamodb/struct.QueryInput.html#structfield.filter_expression
+
+    // let date = String::from("2023-10-02");
+
+    let resp = client
+        .scan()
+        .table_name(table_name)
+        .filter_expression("#filter_key = :val".to_string())
+        .expression_attribute_names(
+            "#filter_key".to_string(),
+            "date".to_string())
+        .expression_attribute_values(
+            ":val".to_string(),
+            AttributeValue::S(date.to_string())
+        )
         .send()
         .await
         .unwrap();

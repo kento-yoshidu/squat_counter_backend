@@ -22,6 +22,7 @@ async fn main() -> std::io::Result<()> {
             )
             .service(fetch_service::fetch_user)
             .service(fetch_service::fetch_count)
+            .service(fetch_service::fetch_today)
             .service(add_service::add_user)
             .service(add_service::add_count)
     })

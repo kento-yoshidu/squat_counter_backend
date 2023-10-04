@@ -9,6 +9,7 @@ use actix_web::{
     Result
 };
 use serde::Serialize;
+use chrono::{Local, Datelike};
 
 #[derive(Debug, Serialize)]
 pub struct ApiResponseBody {
@@ -58,4 +59,19 @@ pub async fn fetch_count() -> Result<impl Responder> {
     }
 
     Ok(web::Json(counts))
+}
+
+#[get("/fetch/today")]
+pub async fn fetch_today() -> Result<impl Responder> {
+    let current_date = Local::now();
+    let year = current_date.year();
+    let month = current_date.month();
+    let day = current_date.day();
+    let date = format!("{}-{:02}-{:02}", year, month, day);
+
+    let resp = fetch_repository::fetch_today(&date).await;
+
+    println!("{:?}", resp);
+
+    Ok(web::Json("OK"))
 }
