@@ -5,7 +5,7 @@ use actix_web::{App, http::header, HttpServer};
 use actix_cors::Cors;
 
 mod service;
-use service::{fetch_service, add_service};
+use service::{fetch_service, add_service, update_service};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -25,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .service(fetch_service::fetch_today)
             .service(add_service::add_user)
             .service(add_service::add_count)
+            .service(update_service::update_count)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
