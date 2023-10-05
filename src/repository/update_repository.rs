@@ -20,13 +20,6 @@ pub async fn update_count() -> bool {
 
     let table_name = env::var("TABLE_NAME_COUNT").unwrap();
 
-    /*
-    let attr_val_up = AttributeValueUpdate::builder()
-        .action(AttributeAction::Put)
-        .value(AttributeValue::N("999".to_string()))
-        .build();
-    */
-
     let resp = client
         .update_item()
         .table_name(table_name)

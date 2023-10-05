@@ -31,6 +31,8 @@ pub async fn add_user(req: web::Json<UserRequest>) -> Result<impl Responder> {
 
 #[post("/add/count")]
 pub async fn add_count(req: web::Json<CountRequest>) -> Result<impl Responder> {
+    println!("req = {:?}", req);
+
     let current_date = Local::now();
     let year = current_date.year();
     let month = current_date.month();
