@@ -46,14 +46,13 @@ pub async fn fetch_count() -> Result<impl Responder> {
 
     for scan_output in resp.into_iter() {
         for item in scan_output.items.unwrap_or_default() {
-            if let (Some(AttributeValue::S(id)),
-                    Some(AttributeValue::S(date)),
+            if let (Some(AttributeValue::S(date)),
                     Some(AttributeValue::S(count)),
                     Some(AttributeValue::S(user_name)),
                 ) =
-                (item.get("id"), item.get("date"), item.get("count"), item.get("user_name"))
+                (item.get("date"), item.get("count"), item.get("user_name"))
             {
-                counts.push(Count::new(id, date, count, &user_name))
+                counts.push(Count::new(date, count, &user_name))
             }
         }
     }
@@ -71,7 +70,26 @@ pub async fn fetch_today() -> Result<impl Responder> {
 
     let resp = fetch_repository::fetch_today(&date).await;
 
-    println!("{:?}", resp);
+    let mut cnt = Count {
+        date: " ".to_string(),
+        count: " ".to_string(),
+        user_name: " ".to_string(),
+    };
 
-    Ok(web::Json("OK"))
+    for scan_output in resp.into_iter() {
+        for item in scan_output.items.unwrap_or_default() {
+            if let (Some(AttributeValue::S(date)),
+                    Some(AttributeValue::S(count)),
+                    Some(AttributeValue::S(user_name)),
+            ) =
+            (item.get("date"), item.get("count"), item.get("user_name"))
+        {
+            cnt.date = date.to_string();
+            cnt.count = count.to_string();
+            cnt.user_name = user_name.to_string();
+        }
+        }
+    }
+
+    Ok(web::Json(cnt))
 }

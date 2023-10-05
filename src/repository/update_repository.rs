@@ -2,12 +2,12 @@ use dotenv::dotenv;
 use std::env;
 
 use aws_sdk_dynamodb::{
-    Client, SdkError,
+    Client,
     model::{
-        AttributeAction,
-        ReturnValue,
+        // AttributeAction,
+        // ReturnValue,
         AttributeValue,
-        AttributeValueUpdate,
+        // AttributeValueUpdate,
     }
 };
 
@@ -20,23 +20,11 @@ pub async fn update_count() -> bool {
 
     let table_name = env::var("TABLE_NAME_COUNT").unwrap();
 
-    let date = String::from("2023-10-02");
-
+    /*
     let attr_val_up = AttributeValueUpdate::builder()
         .action(AttributeAction::Put)
         .value(AttributeValue::N("999".to_string()))
         .build();
-
-    /*
-    let resp = client
-        .update_item()
-        .table_name(table_name)
-        .key("id".to_string(), "1".to_string())
-        .attribute_updates("count", attr_val_up)
-        .return_values(ReturnValue::AllNew)
-        .send()
-        .await
-        .unwrap();
     */
 
     let resp = client
@@ -52,7 +40,7 @@ pub async fn update_count() -> bool {
             "count".to_string())
         .expression_attribute_values(
             ":value",
-            AttributeValue::S("1111".to_string()),
+            AttributeValue::S("111222k1".to_string()),
         )
         .send()
         .await

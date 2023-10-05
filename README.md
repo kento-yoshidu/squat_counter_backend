@@ -8,6 +8,8 @@ https://docs.aws.amazon.com/sdk-for-rust/latest/dg/rust_dynamodb_code_examples.h
 
 https://zenn.dev/yosemat/articles/3bcda75cca951d
 
+https://www.abc.osaka/actix/start
+
 ### dynamodbの更新
 
 https://dottrail.codemountains.org/aws-sdk-rust-crud/

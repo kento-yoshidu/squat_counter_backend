@@ -3,8 +3,6 @@ use crate::{
     model::count::Count,
     model::{user::{User, UserRequest}, count::CountRequest}
 };
-use actix::fut::LocalBoxActorFuture;
-use uuid::Uuid;
 
 use actix_web::{
     post,
@@ -14,6 +12,7 @@ use actix_web::{
 };
 
 use chrono::{Local, Datelike};
+use uuid::Uuid;
 
 #[post("/add/user")]
 pub async fn add_user(req: web::Json<UserRequest>) -> Result<impl Responder> {
@@ -32,8 +31,6 @@ pub async fn add_user(req: web::Json<UserRequest>) -> Result<impl Responder> {
 
 #[post("/add/count")]
 pub async fn add_count(req: web::Json<CountRequest>) -> Result<impl Responder> {
-    let uuid = Uuid::new_v4().to_hyphenated().to_string();
-
     let current_date = Local::now();
     let year = current_date.year();
     let month = current_date.month();
@@ -41,7 +38,6 @@ pub async fn add_count(req: web::Json<CountRequest>) -> Result<impl Responder> {
     let date = format!("{}-{:02}-{:02}", year, month, day);
 
     let count = Count {
-        id: uuid,
         date: date.to_string(),
         count: req.count.to_string(),
         user_name: req.user_name.to_string()
