@@ -18,3 +18,7 @@ aws-sdk-dynamodb = "0.2.0"
 tokio = { version = "1", features = ["full"] }
 uuid = { version = "0.8.1", features = ["serde", "v4"] }
 chrono = "0.4"
+tracing-actix-web = "0.7"
+tracing = "0.1"
+log = "0.4"
+env_logger = "0.9"
