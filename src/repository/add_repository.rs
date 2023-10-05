@@ -38,7 +38,6 @@ pub async fn add_count(count: &Count) -> Result<aws_sdk_dynamodb::output::PutIte
 
     let username = &count.user_name;
 
-    let id = AttributeValue::S(count.id.to_string());
     let date = AttributeValue::S(count.date.to_string());
     let count = AttributeValue::S(count.count.to_string());
     let username = AttributeValue::S(username.to_string());
@@ -46,7 +45,6 @@ pub async fn add_count(count: &Count) -> Result<aws_sdk_dynamodb::output::PutIte
     let request = client
         .put_item()
         .table_name(table_name)
-        .item("id", id)
         .item("date", date)
         .item("count", count)
         .item("user_name", username);
