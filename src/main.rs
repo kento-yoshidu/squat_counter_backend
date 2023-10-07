@@ -1,7 +1,7 @@
 mod repository;
 mod model;
 
-use actix_web::{App, http, http::header, HttpServer};
+use actix_web::{App, http::header, HttpServer};
 use actix_cors::Cors;
 
 mod service;

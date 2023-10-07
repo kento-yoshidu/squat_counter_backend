@@ -4,15 +4,14 @@ use std::env;
 use aws_sdk_dynamodb::{
     Client,
     model::{
-        // AttributeAction,
-        // ReturnValue,
+        ReturnValue,
         AttributeValue,
-        // AttributeValueUpdate,
-    }
+    },
+    output,
+    SdkError
 };
 
-// pub async fn update_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
-pub async fn update_count() -> bool {
+pub async fn update_count() -> Result<output::UpdateItemOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
@@ -35,11 +34,10 @@ pub async fn update_count() -> bool {
             ":value",
             AttributeValue::S("111222k1".to_string()),
         )
+        .return_values(ReturnValue::AllNew)
         .send()
         .await
         .unwrap();
 
-    println!("resp = {:?}", resp);
-
-    true
+    Ok(resp)
 }
