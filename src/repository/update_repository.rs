@@ -1,3 +1,4 @@
+/*
 use dotenv::dotenv;
 use std::env;
 
@@ -41,3 +42,4 @@ pub async fn update_count() -> Result<output::UpdateItemOutput, SdkError<aws_sdk
 
     Ok(resp)
 }
+*/

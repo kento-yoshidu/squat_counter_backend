@@ -1,3 +1,4 @@
+/*
 use crate::{
     repository::add_repository,
     model::count::Count,
@@ -49,3 +50,4 @@ pub async fn add_count(req: web::Json<CountRequest>) -> Result<impl Responder> {
 
     Ok(web::Json("foo"))
 }
+*/

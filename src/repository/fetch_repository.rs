@@ -1,9 +1,10 @@
 use dotenv::dotenv;
 use std::env;
 
-use aws_sdk_dynamodb::{Client, SdkError, model::AttributeValue};
+use aws_sdk_dynamodb::{Client, Error, types::AttributeValue};
+use aws_sdk_dynamodb::operation::scan::ScanOutput;
 
-pub async fn fetch_user() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
+pub async fn fetch_user() -> Result<ScanOutput, Error> {
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
@@ -21,6 +22,7 @@ pub async fn fetch_user() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkErr
     Ok(resp)
 }
 
+/*
 pub async fn fetch_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
@@ -64,3 +66,4 @@ pub async fn fetch_today(date: &String) -> Result<aws_sdk_dynamodb::output::Scan
 
     Ok(resp)
 }
+*/
