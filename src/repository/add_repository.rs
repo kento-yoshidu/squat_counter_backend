@@ -1,10 +1,11 @@
+/*
 use crate::model::user::User;
 use crate::model::count::Count;
 
 use dotenv::dotenv;
 use std::env;
 
-use aws_sdk_dynamodb::{Client, model::AttributeValue};
+use aws_sdk_dynamodb::{Client, types::AttributeValue};
 
 pub async fn add_user(user: &User) -> Result<aws_sdk_dynamodb::output::PutItemOutput, aws_sdk_dynamodb::SdkError<aws_sdk_dynamodb::error::PutItemError>> {
     dotenv().ok();
@@ -53,3 +54,4 @@ pub async fn add_count(count: &Count) -> Result<aws_sdk_dynamodb::output::PutIte
 
     resp
 }
+*/

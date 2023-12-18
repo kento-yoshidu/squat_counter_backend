@@ -2,7 +2,7 @@ use crate::repository::fetch_repository;
 use crate::model::user::User;
 use crate::model::count::Count;
 
-use aws_sdk_dynamodb::model::AttributeValue;
+use aws_sdk_dynamodb::types::AttributeValue;
 use actix_web::{
     get, web,
     Responder,
@@ -24,6 +24,8 @@ pub async fn fetch_user() -> Result<impl Responder> {
 
     let mut users: Vec<User> = Vec::new();
 
+    println!("\nresult = {:?}\n", result);
+
     for output in result.into_iter() {
         for item in output.items.unwrap_or_default() {
             if let (Some(AttributeValue::S(id)),
@@ -38,6 +40,7 @@ pub async fn fetch_user() -> Result<impl Responder> {
     Ok(web::Json(users))
 }
 
+/*
 #[get("/fetch/count")]
 pub async fn fetch_count() -> Result<impl Responder> {
     let resp = fetch_repository::fetch_count().await;
@@ -93,3 +96,4 @@ pub async fn fetch_today() -> Result<impl Responder> {
 
     Ok(web::Json(cnt))
 }
+*/

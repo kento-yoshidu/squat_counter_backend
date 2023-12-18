@@ -1,3 +1,4 @@
+/*
 use crate::model::count::Count;
 use crate::repository::update_repository;
 
@@ -35,3 +36,4 @@ pub async fn update_count() -> Result<impl Responder> {
 
     Ok(web::Json(cnt))
 }
+*/
