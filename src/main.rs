@@ -5,7 +5,7 @@ use actix_web::{App, http::header, HttpServer};
 use actix_cors::Cors;
 
 mod service;
-use service::{fetch_service, /*add_service, update_service*/};
+use service::{fetch_service, add_service, /*update_service*/};
 
 use env_logger::Env;
 
@@ -26,13 +26,11 @@ async fn main() -> std::io::Result<()> {
                     .max_age(3600),
             )
             .service(fetch_service::fetch_user)
-            // .service(fetch_service::fetch_count)
+            .service(fetch_service::fetch_count)
             // .service(fetch_service::fetch_today)
-            /*
-            .service(add_service::add_user)
+            // .service(add_service::add_user)
             .service(add_service::add_count)
-            .service(update_service::update_count)
-            */
+            //.service(update_service::update_count)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
