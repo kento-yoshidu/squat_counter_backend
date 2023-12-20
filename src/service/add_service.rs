@@ -1,4 +1,3 @@
-/*
 use crate::{
     repository::add_repository,
     model::count::Count,
@@ -15,6 +14,7 @@ use actix_web::{
 use chrono::{Local, Datelike};
 use uuid::Uuid;
 
+/*
 #[post("/add/user")]
 pub async fn add_user(req: web::Json<UserRequest>) -> Result<impl Responder> {
     let uuid = Uuid::new_v4().to_hyphenated().to_string();
@@ -29,6 +29,7 @@ pub async fn add_user(req: web::Json<UserRequest>) -> Result<impl Responder> {
 
     Ok(HttpResponse::Ok().json("{\"message\":\"Hello world again!\"}"))
 }
+*/
 
 #[post("/add/count")]
 pub async fn add_count(req: web::Json<CountRequest>) -> Result<impl Responder> {
@@ -50,4 +51,3 @@ pub async fn add_count(req: web::Json<CountRequest>) -> Result<impl Responder> {
 
     Ok(web::Json("foo"))
 }
-*/

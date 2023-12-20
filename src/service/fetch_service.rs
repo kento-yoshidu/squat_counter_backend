@@ -24,8 +24,6 @@ pub async fn fetch_user() -> Result<impl Responder> {
 
     let mut users: Vec<User> = Vec::new();
 
-    println!("\nresult = {:?}\n", result);
-
     for output in result.into_iter() {
         for item in output.items.unwrap_or_default() {
             if let (Some(AttributeValue::S(id)),
@@ -40,7 +38,6 @@ pub async fn fetch_user() -> Result<impl Responder> {
     Ok(web::Json(users))
 }
 
-/*
 #[get("/fetch/count")]
 pub async fn fetch_count() -> Result<impl Responder> {
     let resp = fetch_repository::fetch_count().await;
@@ -63,6 +60,7 @@ pub async fn fetch_count() -> Result<impl Responder> {
     Ok(web::Json(counts))
 }
 
+/*
 #[get("/fetch/today")]
 pub async fn fetch_today() -> Result<impl Responder> {
     let current_date = Local::now();

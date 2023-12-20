@@ -22,8 +22,7 @@ pub async fn fetch_user() -> Result<ScanOutput, Error> {
     Ok(resp)
 }
 
-/*
-pub async fn fetch_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
+pub async fn fetch_count() -> Result<ScanOutput, Error> {
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
 
@@ -41,6 +40,7 @@ pub async fn fetch_count() -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkEr
     Ok(resp)
 }
 
+/*
 pub async fn fetch_today(date: &String) -> Result<aws_sdk_dynamodb::output::ScanOutput, SdkError<aws_sdk_dynamodb::error::ScanError>> {
     let config = aws_config::load_from_env().await;
     let client = Client::new(&config);
